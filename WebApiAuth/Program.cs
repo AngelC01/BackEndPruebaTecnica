@@ -50,7 +50,20 @@ builder.Services.AddScoped<AuthService>();
 #endregion
 
 
+var AngularSpecificOrigins = "_angularFront";
+builder.Services.AddCors(options =>
+{
+	options.AddPolicy(name: AngularSpecificOrigins,
+					  policy =>
+					  {
+						  policy.WithOrigins("http://localhost:4200")
+								.AllowAnyHeader()
+								.AllowAnyMethod();
+					  });
+});
+
 var app = builder.Build();
+app.UseCors(AngularSpecificOrigins);
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
@@ -59,7 +72,7 @@ if (app.Environment.IsDevelopment())
 	app.UseSwaggerUI();
 }
 
-
+app.UseCors("AllowAll");
 app.UseHttpsRedirection();
 
 app.UseAuthorization();

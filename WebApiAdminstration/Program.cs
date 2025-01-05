@@ -87,8 +87,20 @@ builder.Services.AddScoped<UsuarioService>();
 builder.Services.AddScoped<PersonaService>();
 #endregion
 
+var AngularSpecificOrigins = "_angularFront";
+builder.Services.AddCors(options =>
+{
+	options.AddPolicy(name: AngularSpecificOrigins,
+					  policy =>
+					  {
+						  policy.WithOrigins("http://localhost:4200")
+								.AllowAnyHeader()
+								.AllowAnyMethod();
+					  });
+});
 
 var app = builder.Build();
+app.UseCors(AngularSpecificOrigins); 
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
