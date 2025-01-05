@@ -9,6 +9,7 @@ using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using WebApiAdminstration.MiddleWare.MiddlewareExtensions;
 using Microsoft.OpenApi.Models;
+using Microsoft.AspNetCore.Mvc;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -39,7 +40,10 @@ builder.Services.AddSwaggerGen(c =>
 			},
 			new string[] {}
 		}
+
 	});
+	c.MapType<ProblemDetails>(() => new OpenApiSchema { Type = "object", Properties = new Dictionary<string, OpenApiSchema>() });
+
 });
 
 #region JWT
@@ -78,8 +82,9 @@ builder.Services.AddDbContext<DbPruebaContext>(options =>
 
 //builder.Services.AddScoped<IRepository<Usuario>, Repository<Usuario>>();
 builder.Services.AddScoped<IRepository<Usuario>, UsuarioRepository>();
+builder.Services.AddScoped<IRepository<Persona>, PersonaRepository>();
 builder.Services.AddScoped<UsuarioService>();
-
+builder.Services.AddScoped<PersonaService>();
 #endregion
 
 

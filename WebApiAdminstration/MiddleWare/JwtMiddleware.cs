@@ -6,6 +6,10 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Text;
+using AplicationService;
+using Domain.Entities;
+using Microsoft.Extensions.Options;
+using System.Text.Json;
 
 namespace WebApiAdminstration.MiddleWare
 {
@@ -22,7 +26,7 @@ namespace WebApiAdminstration.MiddleWare
 		public async Task InvokeAsync(HttpContext context)
 		{
 			var token = context.Request.Headers["Authorization"].FirstOrDefault()?.Split(' ').LastOrDefault();
-
+			var optionsJson = new JsonSerializerOptions { WriteIndented = true };
 			if (!string.IsNullOrEmpty(token))
 			{
 				try
@@ -48,13 +52,24 @@ namespace WebApiAdminstration.MiddleWare
 				}
 				catch (SecurityTokenValidationException ex)
 				{
-					context.Response.StatusCode = 401; 
-					await context.Response.WriteAsync("Token Invalido");
+
+					AppResult<bool> result = new AppResult<bool>(false, "Token Invalido");
+
+					context.Response.StatusCode = 401;
+					context.Response.ContentType = "text/plain";
+					var json = JsonSerializer.Serialize(result, optionsJson);
+					await context.Response.WriteAsync(json);
 					return;
 				}
 			}
 			else
 			{
+				AppResult<bool> result = new AppResult<bool>(false, "Token Invalido");
+				context.Response.StatusCode = 401;
+				context.Response.ContentType = "text/plain";
+				var json = JsonSerializer.Serialize(result, optionsJson);
+				await context.Response.WriteAsync(json);
+				return;
 			}
 
 			await _next(context);

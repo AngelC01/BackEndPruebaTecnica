@@ -46,6 +46,11 @@ namespace AplicationService.Services
 
 		public async Task<AppResult<bool>> EliminarUsuario(int id)
 		{
+			var usuario = await _usuarioRepository.GetByIdAsync(id);
+			if(usuario == null)
+			{
+				return await Task.FromResult(new AppResult<bool>(false, "Usuario no encontrado"));
+			}
 			await _usuarioRepository.DeleteAsync(id);
 			return await Task.FromResult(new AppResult<bool>(true, "Usuario eliminado exitosamente"));
 

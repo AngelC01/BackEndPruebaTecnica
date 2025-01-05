@@ -7,6 +7,8 @@ using System;
 using Domain.Entities;
 using Microsoft.Extensions.Configuration;
 using AplicationService.Services;
+using AplicationService.Dto;
+using AplicationService;
 
 namespace WebApiAuth.Controllers
 {
@@ -26,18 +28,26 @@ namespace WebApiAuth.Controllers
 
 
 		[HttpPost("login")]
-		public async Task<IActionResult> Login(string username, string password)
+		public async Task<AppResult<TokenDto?>> Login(UsuarioLoginDto loginDto)
 		{
-			var usuario = await _authService.AutenticarUsuario(username, password);
+			var usuario = await _authService.AutenticarUsuario(loginDto.username, loginDto.password);
 
 			if (usuario == null)
 			{
-				return Unauthorized(new { message = "Credenciales inválidas" });
+				return await Task.FromResult(new AppResult<TokenDto?>(null, "Credenciales inválidas"));
 			}
 
 			var token = GenerarTokenJWT(usuario);
+			var tokenDto = new TokenDto
+			{
+				Id = usuario.Identificador,
+				Usuario = usuario.NombreUsuario,
+				Password = usuario.Password,
+				Token = token
+			};
 
-			return Ok(new { token = token });
+
+			return await Task.FromResult(new AppResult<TokenDto?>(tokenDto, "Ingreso exitoso"));
 		}
 
 

@@ -11,7 +11,7 @@ namespace Repositories.ContextDatabase
 	public class  DbPruebaContext : DbContext
 	{
 		public DbSet<Usuario> Usuarios { get; set; }
-		//public DbSet<Persona> Personas { get; set; }
+		public DbSet<Persona> Personas { get; set; }
 
 		public DbPruebaContext(DbContextOptions<DbPruebaContext> options) : base(options) { }
 
@@ -25,6 +25,11 @@ namespace Repositories.ContextDatabase
 					.HasColumnName("Usuario");
 				entity.Property(e => e.Password)
 				.HasColumnName("Pass");
+			});
+
+			modelBuilder.Entity<Persona>(entity =>
+			{
+				entity.HasKey(e => e.Identificador);
 			});
 		}
 

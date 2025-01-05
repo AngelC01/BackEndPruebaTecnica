@@ -12,14 +12,7 @@ namespace Domain.Entities
 		public int Identificador { get;  set; }
 		public string NombreUsuario { get; set; } = "";
 		public string Password { get; set; } = "";
-		public DateTime FechaCreacion { get;  set; }
+		public DateTime FechaCreacion { get;  private set; }
 
-		//public Usuario(string nombreUsuario, string password)
-		//{
-
-		//	NombreUsuario = nombreUsuario;
-		//	Password = password;
-		//	FechaCreacion = DateTime.UtcNow;
-		//}
 	}
 }
