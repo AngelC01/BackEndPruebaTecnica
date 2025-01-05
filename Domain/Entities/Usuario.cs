@@ -9,17 +9,17 @@ namespace Domain.Entities
 	public class Usuario
 	{
 
-		public int Identificador { get; private set; }
-		public string NombreUsuario { get; private set; }
-		public string Password { get; private set; }
-		public DateTime FechaCreacion { get; private set; }
+		public int Identificador { get;  set; }
+		public string NombreUsuario { get; set; } = "";
+		public string Password { get; set; } = "";
+		public DateTime FechaCreacion { get;  set; }
 
-		public Usuario(string nombreUsuario, string password)
-		{
+		//public Usuario(string nombreUsuario, string password)
+		//{
 
-			NombreUsuario = nombreUsuario;
-			Password = password;
-			FechaCreacion = DateTime.UtcNow;
-		}
+		//	NombreUsuario = nombreUsuario;
+		//	Password = password;
+		//	FechaCreacion = DateTime.UtcNow;
+		//}
 	}
 }

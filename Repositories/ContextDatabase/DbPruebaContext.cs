@@ -20,10 +20,12 @@ namespace Repositories.ContextDatabase
 			base.OnModelCreating(modelBuilder);
 			modelBuilder.Entity<Usuario>(entity =>
 			{
-				entity.HasKey(e => e.Identificador); // Configura "Identificador" como clave primaria
+				entity.HasKey(e => e.Identificador);
+				entity.Property(e => e.NombreUsuario)
+					.HasColumnName("Usuario");
+				entity.Property(e => e.Password)
+				.HasColumnName("Pass");
 			});
-
-			// Configuración adicional de entidades si es necesario
 		}
 
 

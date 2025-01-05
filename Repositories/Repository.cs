@@ -1,5 +1,6 @@
 ﻿using Domain.Interfaces.Repositories;
 using Microsoft.EntityFrameworkCore;
+using Repositories.ContextDatabase;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,10 +11,10 @@ namespace Repositories
 {
 	public class Repository<T> : IRepository<T> where T : class
 	{
-		private readonly DbContext _context;
+		private readonly DbPruebaContext _context;
 		private readonly DbSet<T> _dbSet;
 
-		public Repository(DbContext context)
+		public Repository(DbPruebaContext context)
 		{
 			_context = context;
 			_dbSet = _context.Set<T>();

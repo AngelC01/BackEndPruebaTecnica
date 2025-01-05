@@ -45,17 +45,16 @@ namespace WebApiAuth.Controllers
 		{
 			var claims = new[]
 			{
-			new Claim(ClaimTypes.Name, usuario.NombreUsuario), // Nombre de usuario (importante para la otra API)
-            new Claim(ClaimTypes.NameIdentifier, usuario.Identificador.ToString()), // ID del usuario (útil para identificar al usuario)
-            // Agregar otros claims relevantes que la otra API necesite (roles, permisos, etc.)
-        };
+				new Claim(ClaimTypes.Name, usuario.NombreUsuario),
+				new Claim(ClaimTypes.NameIdentifier, usuario.Identificador.ToString()), 
+			 };
 
 			var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Jwt:Key"]));
 			var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
 			var token = new JwtSecurityToken(
 				issuer: _config["Jwt:Issuer"],
-				audience: _config["Jwt:Audience"], // ¡IMPORTANTE! La otra API debe conocer esta audiencia
+				audience: _config["Jwt:Audience"],
 				claims: claims,
 				expires: DateTime.Now.AddHours(1), // Tiempo de expiración
 				signingCredentials: creds
